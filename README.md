@@ -133,7 +133,7 @@ This project is licensed under the **MIT License**. See [LICENSE](./LICENSE) for
 
 ## 📬 Contact
 
-Created by **Ankan Das** – follow me on Twitter: [@AnkanDasDev](https://twitter.com/AnkanDasDev)
-Email: [ankan.das@example.com](mailto:ankan.das@example.com)
+Created by **Ankan Das** – follow me on Twitter: [@ankandas99](https://x.com/ankandas99)
+Email: [dasankan84@gmail.com](mailto:dasankan84@gmail.com)
 
 ---
