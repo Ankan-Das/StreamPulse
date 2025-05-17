@@ -1,0 +1,5 @@
+clusterName: streampulse
+auth:
+  enabled: false
+persistence:
+  enabled: false

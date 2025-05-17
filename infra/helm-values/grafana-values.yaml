@@ -1,0 +1,7 @@
+adminUser: admin
+adminPassword: admin
+persistence:
+  enabled: false
+service:
+  type: NodePort
+  port: 80
