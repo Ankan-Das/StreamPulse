@@ -1,2 +1,3 @@
 installation-steps.txt
 venv/
+__pycache__
