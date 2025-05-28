@@ -1,6 +1,0 @@
-jobmanager:
-  replicaCount: 1
-  memory: 1024m
-taskmanager:
-  replicaCount: 1
-  memory: 1024m

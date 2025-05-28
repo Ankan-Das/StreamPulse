@@ -1,6 +1,0 @@
-replicaCount: 1
-
-zookeeper:
-  enabled: false                # we’ll install ZK separately
-persistence:
-  enabled: false                # in-memory for Day 1/2 testing
