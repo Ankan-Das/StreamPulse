@@ -1,0 +1,11 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: 'fastapi-ml-service'
+    static_configs:
+      - targets: ['fastapi-ml-service:8001']
+  
+  - job_name: 'processor'
+    static_configs:
+      - targets: ['processor:9000']
