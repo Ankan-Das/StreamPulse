@@ -177,6 +177,17 @@ curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" -
 ```
 
 ---
+## Docker Commands
+
+```docker build -t fastapi-ml-service .```
+
+```docker run -d -p 8000:8000 fastapi-ml-service```
+
+```docker ps```
+
+```docker stop <NAMES>/<CONTAINER-ID>```
+
+---
 
 ## ✅ Requirements
 
