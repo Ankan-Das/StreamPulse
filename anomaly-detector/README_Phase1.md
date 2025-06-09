@@ -195,8 +195,13 @@ curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" -
 - Docker + Docker Compose
 - pip: `kafka-python`, `fastapi`, `uvicorn`, `joblib`, `requests`, `scikit-learn`
 
+`docker compose down -v && docker compose up --build`
+
 ---
 
 ## 📌 Next Step: EC2 Staging Deployment
 
 Ensure end-to-end flow is stable and documented before deploying to AWS.
+
+
+

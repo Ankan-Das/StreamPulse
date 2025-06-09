@@ -9,7 +9,7 @@ ANOMALIES = Counter("processor_anomalies", "Anomalies detected")
 
 start_http_server(9000)
 
-consumer = KafkaConsumer('logs', bootstrap_servers='kafka:9092',
+consumer = KafkaConsumer('nyc-taxi', bootstrap_servers='kafka:9092',
                          value_deserializer=lambda m: json.loads(m.decode('utf-8')))
 
 

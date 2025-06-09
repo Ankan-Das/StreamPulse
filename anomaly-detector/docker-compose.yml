@@ -18,12 +18,22 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
-  log-simulator:
-    build: ./log-simulator
+  # log-simulator:
+  #   build: ./log-simulator
+  #   depends_on:
+  #     - kafka
+  #   environment:
+  #     - KAFKA_BOOTSTRAP=kafka:9092
+  #   restart: on-failure
+    
+  nyc-taxi-simulator:
+    build: ./usecases/nyc_taxi
     depends_on:
       - kafka
     environment:
       - KAFKA_BOOTSTRAP=kafka:9092
+    volumes:
+      - ./usecases/nyc_taxi:/app
     restart: on-failure
 
   fastapi-ml-service:
@@ -67,6 +77,7 @@ services:
     depends_on:
       - prometheus
     restart: on-failure
+
 
 volumes:
   grafana-data:
