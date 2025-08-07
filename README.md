@@ -154,7 +154,7 @@ curl -X POST "http://localhost:8000/predict" \
 ## 📊 **Monitoring & Observability**
 
 ### **Real-Time Dashboard**
-![Grafana Dashboard Preview](https://via.placeholder.com/800x400/1f1f1f/ffffff?text=Real-Time+Anomaly+Dashboard)
+![Grafana Dashboard Preview](./assets/grafana-preview.png)
 
 **Key Metrics:**
 - 🚨 **Anomaly Rate**: Real-time detection percentage
