@@ -1,2 +1,4 @@
 installation-steps.txt
 __pycache__
+*.parquet
+venv
