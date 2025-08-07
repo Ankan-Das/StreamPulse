@@ -1,0 +1,22 @@
+name: "server_logs"
+description: "Server Logs Anomaly Detection"
+kafka:
+  topic: "server-logs"
+  consumer_group: "server-logs-processor"
+model:
+  file: "model_server_logs.joblib"
+  scaler: "scaler_server_logs.joblib"
+features:
+  - response_time
+  - request_size  
+  - status_code_numeric
+  - hour_of_day
+  - requests_per_minute
+metrics:
+  prefix: "server_logs"
+  labels:
+    - response_time
+    - request_size
+    - status_code_numeric
+    - hour_of_day
+    - requests_per_minute 

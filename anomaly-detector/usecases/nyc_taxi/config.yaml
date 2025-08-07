@@ -1,0 +1,20 @@
+name: "nyc_taxi"
+description: "NYC Taxi Trip Anomaly Detection"
+kafka:
+  topic: "nyc-taxi"
+  consumer_group: "nyc-taxi-processor"
+model:
+  file: "model_taxi.joblib"
+  scaler: "scaler_taxi.joblib"
+features:
+  - trip_duration
+  - trip_distance
+  - fare_amount
+  - total_amount
+metrics:
+  prefix: "nyc_taxi"
+  labels:
+    - trip_duration
+    - trip_distance
+    - fare_amount
+    - total_amount 

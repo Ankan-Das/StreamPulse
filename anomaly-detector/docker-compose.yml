@@ -7,7 +7,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
 
   kafka:
-    image: confluentinc/cp-kafka:latest
+    image: confluentinc/cp-kafka:7.2.15
     depends_on:
       - zookeeper
     ports:
@@ -26,14 +26,15 @@ services:
   #     - KAFKA_BOOTSTRAP=kafka:9092
   #   restart: on-failure
     
-  nyc-taxi-simulator:
-    build: ./usecases/nyc_taxi
+  stream-simulator:
+    build: ./usecases/${USE_CASE:-nyc_taxi}
     depends_on:
       - kafka
     environment:
       - KAFKA_BOOTSTRAP=kafka:9092
+      - USE_CASE=${USE_CASE:-nyc_taxi}
     volumes:
-      - ./usecases/nyc_taxi:/app
+      - ./usecases/${USE_CASE:-nyc_taxi}:/app
     restart: on-failure
 
   fastapi-ml-service:
@@ -42,6 +43,9 @@ services:
       - "8000:8000"
     volumes:
       - ./fastapi-ml-service:/fastapi-ml-service
+      - ./usecases:/usecases
+    environment:
+      - USE_CASE=${USE_CASE:-nyc_taxi}
     restart: on-failure
     depends_on:
       - kafka
@@ -53,6 +57,9 @@ services:
       - fastapi-ml-service
     environment:
       - KAFKA_BOOTSTRAP=kafka:9092
+      - USE_CASE=${USE_CASE:-nyc_taxi}
+    volumes:
+      - ./usecases:/usecases
     restart: on-failure
   
 

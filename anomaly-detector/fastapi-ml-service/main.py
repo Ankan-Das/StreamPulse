@@ -1,55 +1,92 @@
+import os
+import yaml
+import importlib.util
 from fastapi import FastAPI, Request
 import numpy as np
 import joblib
+from prometheus_client import start_http_server, Counter, Gauge
 
 app = FastAPI()
 
+# Load use case configuration
+USE_CASE = os.getenv('USE_CASE', 'nyc_taxi')
+config_path = f'/usecases/{USE_CASE}/config.yaml'
+
+with open(config_path, 'r') as f:
+    config = yaml.safe_load(f)
+
 # Load model and scaler
-model = joblib.load('model_taxi.joblib')
-scaler = joblib.load('scaler_taxi.joblib')
+model_path = f'/usecases/{USE_CASE}/{config["model"]["file"]}'
+scaler_path = f'/usecases/{USE_CASE}/{config["model"]["scaler"]}'
 
-# Prometheus metrics
-from prometheus_client import start_http_server, Counter, Gauge
-TOTAL_MESSAGES = Counter("Total", "Total /predict requests")
-TOTAL_ANOMALIES = Counter("Anomalies", "Anomalies predicted")
+model = joblib.load(model_path)
+scaler = joblib.load(scaler_path)
 
-# Gauge metrics — overwrite each time a log is processed
-LATEST_TRIP_DURATION = Gauge("latest_trip_duration", "Trip duration of last processed message")
-LATEST_TRIP_DISTANCE = Gauge("latest_trip_distance", "Trip distance of last processed message")
-LATEST_FARE_AMOUNT = Gauge("latest_fare_amount", "Fare amount of last processed message")
-LATEST_TOTAL_AMOUNT = Gauge("latest_total_amount", "Total amount of last processed message")
-LATEST_IS_ANOMALY = Gauge("latest_is_anomaly", "Whether last message was anomaly (1=True, 0=False)")
+# Load feature extraction module
+features_module_path = f'/usecases/{USE_CASE}/features.py'
+spec = importlib.util.spec_from_file_location("features", features_module_path)
+features_module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(features_module)
+
+# Initialize metrics
+prefix = config["metrics"]["prefix"]
+TOTAL_MESSAGES = Counter(f'{prefix}_total_messages', "Total predict requests")
+TOTAL_ANOMALIES = Counter(f'{prefix}_anomalies', "Anomalies predicted")
+
+# Dynamic gauges based on config
+gauges = {}
+for feature in config["features"]:
+    gauges[feature] = Gauge(f'{prefix}_latest_{feature}', f'Latest {feature}')
+
+LATEST_IS_ANOMALY = Gauge(f'{prefix}_latest_is_anomaly', "Whether last message was anomaly")
 
 # Start Prometheus metrics server
-start_http_server(8001)  # 👈 Starts a separate server at :8000/metrics
+start_http_server(8001)
+
+print(f"Started anomaly detection service for use case: {config['name']}")
+
+@app.get("/")
+async def root():
+    return {
+        "service": "Anomaly Detection API",
+        "use_case": config["name"],
+        "features": config["features"]
+    }
+
+@app.get("/health")
+async def health():
+    return {"status": "healthy", "use_case": USE_CASE}
 
 @app.post("/predict")
 async def predict(request: Request):
-    
     payload = await request.json()
     
-    features = np.array([[
-        payload['trip_duration'],
-        payload['trip_distance'],
-        payload['fare_amount'],
-        payload['total_amount']
-    ]])
+    # Use dynamic feature extraction
+    features = features_module.extract_features(payload)
     
-    LATEST_TRIP_DURATION.set(payload["trip_duration"]/100)
-    LATEST_TRIP_DISTANCE.set(payload["trip_distance"])
-    LATEST_FARE_AMOUNT.set(payload["fare_amount"])
-    LATEST_TOTAL_AMOUNT.set(payload["total_amount"])
-
+    # Update metrics for each feature
+    for i, feature_name in enumerate(config["features"]):
+        if len(features[0]) > i:
+            gauges[feature_name].set(features[0][i])
     
+    # Make prediction
     features_scaled = scaler.transform(features)
     prediction = model.predict(features_scaled)[0]
     
+    # Update counters
     TOTAL_MESSAGES.inc()
-    if prediction == -1:
-        TOTAL_ANOMALIES.inc()
-        LATEST_IS_ANOMALY.set(80)
-        print("ANOMALY FOOUnd")
-    else:
-        LATEST_IS_ANOMALY.set(-10)
+    is_anomaly = prediction == -1
     
-    return {"anomaly": bool(prediction == -1)}
+    if is_anomaly:
+        TOTAL_ANOMALIES.inc()
+        LATEST_IS_ANOMALY.set(1)
+        print(f"🚨 ANOMALY DETECTED for use case {USE_CASE}: {payload}")
+    else:
+        LATEST_IS_ANOMALY.set(0)
+        print(f"✅ Normal prediction for use case {USE_CASE}")
+    
+    return {
+        "anomaly": bool(is_anomaly),
+        "use_case": USE_CASE,
+        "features": dict(zip(config["features"], [float(f) for f in features[0]]))
+    }
