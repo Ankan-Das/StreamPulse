@@ -7,7 +7,7 @@
 [![Kafka](https://img.shields.io/badge/Apache%20Kafka-Latest-orange.svg)](https://kafka.apache.org)
 [![Grafana](https://img.shields.io/badge/Grafana-Dashboard-orange.svg)](https://grafana.com)
 [![Prometheus](https://img.shields.io/badge/Prometheus-Monitoring-red.svg)](https://prometheus.io)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 > **A production-ready, scalable anomaly detection platform that processes real-time data streams using machine learning, with comprehensive monitoring, dynamic validation, and multi-use case support.**
 
@@ -350,7 +350,7 @@ python test_pydantic_validation.py
 
 ## 📄 **License**
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
 
 ---
 
