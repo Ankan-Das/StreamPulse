@@ -91,8 +91,8 @@ graph TD
 
 ### **1. Clone & Setup**
 ```bash
-git clone https://github.com/your-username/stream-pulse.git
-cd stream-pulse
+git clone https://github.com/your-username/StreamPulse.git
+cd StreamPulse
 ```
 
 ### **2. Launch the System**
@@ -376,8 +376,8 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 <div align="center">
 
-**Built with ❤️ by [Your Name]**
+**Built with ❤️ by [Ankan Das]**
 
-[🌟 Star this repo](https://github.com/your-username/stream-pulse) • [🐛 Report Bug](https://github.com/your-username/stream-pulse/issues) • [✨ Request Feature](https://github.com/your-username/stream-pulse/issues)
+[🌟 Star this repo](https://github.com/Ankan-Das/StreamPulse) • [🐛 Report Bug](https://github.com/Ankan-Das/StreamPulse/issues) • [✨ Request Feature](https://github.com/Ankan-Das/StreamPulse/issues)
 
 </div>
