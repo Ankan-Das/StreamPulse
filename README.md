@@ -11,6 +11,9 @@
 
 > **A production-ready, scalable anomaly detection platform that processes real-time data streams using machine learning, with comprehensive monitoring, dynamic validation, and multi-use case support.**
 
+
+![Banner](./assets/banner.png)
+
 ---
 
 ## 🎯 **Project Highlights**
