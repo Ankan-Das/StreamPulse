@@ -376,7 +376,7 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 <div align="center">
 
-**Built with ❤️ by [Ankan Das]**
+**Built with ❤️ by Ankan Das**
 
 [🌟 Star this repo](https://github.com/Ankan-Das/StreamPulse) • [🐛 Report Bug](https://github.com/Ankan-Das/StreamPulse/issues) • [✨ Request Feature](https://github.com/Ankan-Das/StreamPulse/issues)
 
